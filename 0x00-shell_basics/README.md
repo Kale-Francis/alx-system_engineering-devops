@@ -1,1 +1,1 @@
-Readme File
+0x00. Shell, basics 
