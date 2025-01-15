@@ -1,4 +1,4 @@
-# creates a file in /tmp
+# This manifest creates a file at /tmp/school with specific attributes.
 
 file { '/tmp/school':
   content =>'I love Puppet',
