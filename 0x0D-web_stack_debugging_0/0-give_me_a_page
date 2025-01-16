@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script fixes the Apache setup in the container to serve "Hello ALX"
+
+# Start Apache service
+service apache2 start
+
+# Create the custom HTML page
+echo "Hello ALX" > /var/www/html/index.html
