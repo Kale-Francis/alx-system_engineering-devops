@@ -1,22 +1,16 @@
-#!/bin/bash
-# Ensure the system is updated
+#!/usr/bin/env bash
+# Ensure the system is updated and install Nginx
 apt update && apt install -y nginx
 
-# Ensure Nginx starts on boot
+# Ensure Nginx starts on boot and is running
 systemctl enable --now nginx
 
-# Allow port 80 through the firewall
-ufw allow 80/tcp || echo "Firewall not active, skipping rule addition"
+# Ensure firewall allows HTTP traffic (if UFW is active)
+ufw allow 80/tcp || true
 
-# Configure Nginx to listen on all IPv4 interfaces
-cat > /etc/nginx/sites-available/default <<EOL
-server {
-    listen 80;
-    server_name _;
-    root /var/www/html;
-    index index.html;
-}
-EOL
+# Ensure Nginx is listening on all IPv4 interfaces for port 80
+sed -i '/listen 80 default_server;/c\    listen 80;' /etc/nginx/sites-available/default
+sed -i '/listen \[::\]:80 default_server;/c\    listen [::]:80;' /etc/nginx/sites-available/default
 
 # Reload Nginx to apply changes
 nginx -t && systemctl restart nginx
