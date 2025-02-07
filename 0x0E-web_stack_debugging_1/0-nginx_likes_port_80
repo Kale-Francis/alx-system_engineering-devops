@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Ensure the system is updated
 apt update && apt install -y nginx
 
