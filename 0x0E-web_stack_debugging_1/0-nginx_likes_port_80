@@ -1,20 +1,23 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-#This checks why my ubuntu container is not liestening to port 80 for nginix
+# Ensure the system is updated
+apt update && apt install -y nginx
 
-apt update && apt install -y nginix
+# Ensure Nginx starts on boot
+systemctl enable --now nginx
 
-systemcl enable --now nginix
-
+# Allow port 80 through the firewall
 ufw allow 80/tcp || echo "Firewall not active, skipping rule addition"
 
+# Configure Nginx to listen on all IPv4 interfaces
 cat > /etc/nginx/sites-available/default <<EOL
 server {
-   listen 80;
-   server_name _;
-   root /var/www/html;
-   index index.html;
+    listen 80;
+    server_name _;
+    root /var/www/html;
+    index index.html;
 }
 EOL
 
-nginx -t &&   systemctl restart nginx
+# Reload Nginx to apply changes
+nginx -t && systemctl restart nginx
