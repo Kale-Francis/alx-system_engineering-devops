@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+#This checks why my ubuntu container is not liestening to port 80 for nginix
+
+apt update && apt install -y nginix
+
+systemcl enable --now nginix
+
+ufw allow 80/tcp || echo "Firewall not active, skipping rule addition"
+
+cat > /etc/nginx/sites-available/default <<EOL
+server {
+   listen 80;
+   server_name _;
+   root /var/www/html;
+   index index.html;
+}
+EOL
+
+nginx -t &&   systemctl restart nginx
