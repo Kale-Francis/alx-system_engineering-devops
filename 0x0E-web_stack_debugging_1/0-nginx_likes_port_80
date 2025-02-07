@@ -1,16 +1,33 @@
 #!/usr/bin/env bash
-# Ensure the system is updated and install Nginx
+#what’s keeping your Ubuntu container’s Nginx installation from listening on port 80
+# Update package list and install Nginx if not installed
 apt update && apt install -y nginx
 
 # Ensure Nginx starts on boot and is running
 systemctl enable --now nginx
 
-# Ensure firewall allows HTTP traffic (if UFW is active)
-ufw allow 80/tcp || true
+# Allow traffic on port 80 (if UFW is installed and active)
+if command -v ufw &> /dev/null; then
+    ufw allow 80/tcp || true
+fi
 
-# Ensure Nginx is listening on all IPv4 interfaces for port 80
-sed -i '/listen 80 default_server;/c\    listen 80;' /etc/nginx/sites-available/default
-sed -i '/listen \[::\]:80 default_server;/c\    listen [::]:80;' /etc/nginx/sites-available/default
+# Ensure Nginx is listening on all active IPv4 interfaces on port 80
+cat > /etc/nginx/sites-available/default <<EOL
+server {
+    listen 80;
+    server_name _;
+
+    root /var/www/html;
+    index index.html;
+    
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOL
+
+# Create a simple index.html to return HTTP 200 response
+echo "<h1>Welcome to Nginx</h1>" > /var/www/html/index.html
 
 # Reload Nginx to apply changes
 nginx -t && systemctl restart nginx
