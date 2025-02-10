@@ -1,6 +1,7 @@
 docker exe -it $(docker ps -q) /bin/bash            
-> apt update
-> apt install -y apache2
-> echo "Hello ALX" > /var/www/html/index.html
-> service apache2 start
-> exit
+#!/usr/bin/env bash
+apt update
+apt install -y apache2
+echo "Hello ALX" > /var/www/html/index.html
+service apache2 start
+exit
