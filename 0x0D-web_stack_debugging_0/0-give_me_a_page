@@ -1,7 +1,11 @@
-docker exe -it $(docker ps -q) #!/bin/bash          
-#!/usr/bin/env bash
+
+docker exe -it $(docker ps -q) bash -c
+#!/usr/bin/env bash          
 apt update
 apt install -y apache2
 echo "Hello ALX" > /var/www/html/index.html
-service apache2 start
+service apache2 start &&
+service apache2 status | grep 'Active:' > /apache_status.txt
+
+docker exe -it $(docker ps -q) cat /apache_status.txt
 exit
