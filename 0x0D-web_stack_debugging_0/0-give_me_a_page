@@ -1,4 +1,4 @@
-docker exe -it $(docker ps -q)           
+docker exe -it $(docker ps -q) #!/bin/bash          
 #!/usr/bin/env bash
 apt update
 apt install -y apache2
