@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
+# This script installs Nginx and sets up a custom page
 
-sudo apt-get  update
-sudo apt-get install -y nginx
-sudo chown -r ubuntu /var/www
-echo "Hello World" > /var/www/html/index.nginx-debian.html
-sudo service nginx start
+# Update package lists
+apt update -y
+
+# Install Nginx
+apt install -y nginx
+
+# Create a custom HTML page
+echo "Hello World!" > /var/www/html/index.html
+
+# Ensure Nginx is listening on port 80
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-enabled/default
+
+# Restart Nginx using service (since systemctl is not allowed)
+service nginx restart
