@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Configures a new Ubuntu server with Nginx and adds a custom HTTP header
+
+# Install Nginx
+sudo apt update -y
+sudo apt install -y nginx
+
+# Modify the default Nginx config to add the custom header
+sudo sed -i '/server_name _;/a \\tadd_header X-Served-By $hostname;' /etc/nginx/sites-available/default
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
