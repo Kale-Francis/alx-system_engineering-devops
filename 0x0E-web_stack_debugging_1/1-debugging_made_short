@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Ensures Nginx is installed and running on port 80
+# Fixes Nginx and ensures it's running on port 80
 
+pkill -9 nginx
 apt-get update -y
 apt-get install -y nginx
 sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
-service nginx restart
+nginx
