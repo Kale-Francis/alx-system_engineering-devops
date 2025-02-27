@@ -1,10 +1,4 @@
-
-WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
-
-Reading package lists...
-E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)
-E: Unable to lock directory /var/lib/apt/lists/
-W: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)
-W: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)
-./0-nginx_likes_port_80: line 10: /etc/nginx/sites-available/default: Permission denied
-./0-nginx_likes_port_80: line 25: /var/www/html/index.html: Permission denied
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+Skipping adding existing rule
+Skipping adding existing rule (v6)
