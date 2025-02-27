@@ -1,28 +1,17 @@
 #!/usr/bin/env bash
-#what’s keeping your Ubuntu container’s Nginx installation from listening on port 80
-# Update package list and install Nginx
-apt update && apt install -y nginx
+# This script configures Nginx to listen on port 80 of all active IPv4 IPs
 
-# Start Nginx using service (since systemctl is not available)
-service nginx start
+# Install Nginx if it's not already installed
+apt-get update -y
+apt-get install -y nginx
 
-# Ensure Nginx is listening on all active IPv4 interfaces on port 80
-cat > /etc/nginx/sites-available/default <<EOL
-server {
-    listen 80;
-    server_name _;
+# Ensure Nginx is running
+systemctl start nginx
+systemctl enable nginx
 
-    root /var/www/html;
-    index index.html;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}
-EOL
-
-# Create a simple web page for verification
-echo "<h1>Welcome to Nginx</h1>" > /var/www/html/index.html
+# Update Nginx configuration to listen on port 80
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80 default_server;/listen [::]:80;/' /etc/nginx/sites-available/default
 
 # Restart Nginx to apply changes
-service nginx restart
+systemctl restart nginx
